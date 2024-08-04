@@ -2,14 +2,12 @@ import firestore from '@react-native-firebase/firestore';
 
 const getHalka = async () => {
     try {
-        const userQuerySnapshot = await firestore()
-            .collection('halka')
-            .get();
-        
-        console.log("userquery", userQuerySnapshot,"docs",userQuerySnapshot.docs)
-        
-    } catch (error) {
-        console.error('Error seeding data:', error);
+        const halkaSnapshot = await ( await firestore().collection('Halka').get()).docs
+        const halkaData = halkaSnapshot.map(doc => doc.data());
+        return halkaData;
+    } catch (e) {
+        return []
     }
-};
+}
+
 export default getHalka;

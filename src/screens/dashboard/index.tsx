@@ -1,6 +1,8 @@
 
-import { View,Text, StyleSheet,TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+
 import LinearGradient from 'react-native-linear-gradient';
+
 import {Navigation} from '../../types';
 
 type LoginScreenProps = {
@@ -9,17 +11,20 @@ type LoginScreenProps = {
 
 export default function Dashboard({ navigation }: LoginScreenProps) {
     
-    const handleInviteUser = () => {
+  const handleInviteUser = () => {
+      
       navigation.navigate('Invite');
     };
     
   return (
     <View style={styles.safeArea}>
-      <TouchableOpacity style={styles.buttonStyle} onPress={handleInviteUser}>
-        <LinearGradient colors={['#1410B4', '#040268']}>
-          <Text style={styles.buttonText}> Invite User</Text>
-        </LinearGradient>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonView} onPress={handleInviteUser} >
+              <LinearGradient
+                colors={['#1410B4', '#040268']}
+                style={styles.buttonStyle}>
+                <Text style={styles.buttonText}>Generate Invite</Text>
+              </LinearGradient>
+            </TouchableOpacity>
     </View>
   );
 }
@@ -29,14 +34,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonStyle: {
-      alignItems: 'flex-end',
-      margin: 8,
-
+    borderRadius: 20,
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+   buttonView: {
+    width: '100%',
+    marginTop: '20%',
+    borderRadius: 20,
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',
-    fontSize: 14,
-    width: 100,
+    fontSize: 18,
+    width: 240,
     fontWeight: 'bold',
     padding: 10,
     textAlign: 'center',

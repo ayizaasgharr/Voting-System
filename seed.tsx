@@ -6,7 +6,8 @@ const seed = async () => {
          .collection('User')
          .where('Email', '==', 'admin21@gmail.com')
          .get();
-         if (userQuerySnapshot.empty) {
+  
+    if (userQuerySnapshot.empty) {
            await firestore().collection('User').add({
              Name: 'Admin',
              Password: 'admin1234',

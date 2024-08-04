@@ -1,69 +1,93 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TextInput, Text, TouchableOpacity} from 'react-native';
-import {Formik} from 'formik';
-import {Picker} from '@react-native-picker/picker';
-import LinearGradient from 'react-native-linear-gradient';
+import React,{useEffect, useState} from 'react';
+import { View, StyleSheet, TextInput, Text, Alert, Clipboard, } from 'react-native';
+
+import { Formik } from 'formik';
+import { DocumentData } from '@firebase/firestore'; 
 
 import { user_types } from '../../constants/invite';
+import SelectField from './components/SelectField';
+import CustomButton from '../../components/CustomButton';
+
 import getHalka from '../../firebase/Halka';
+import setUser from '../../firebase/User';
 
-export default function InviteUser() {
-  const initialValue = {
+
+ const initialValue = {
     cnic: '',
-    password: '',
-      color: 'red', 
-    invite:''
-  };
+    type: 'canidiate',
+    halka: 'na-77', 
+ };
+  
+ const InviteUser = () => {
 
-  const [selectedValue, setSelectedValue] = useState(initialValue.color);
+  const [halka, setHalka] = useState<DocumentData[]>([])
+  const [error, setError] = useState({
+    cnicError: '',
+  })
+  const [invite, setInvite] = useState<string>('')
+  const regex = /^[0-9]{13}$/;
 
   useEffect(() => {
-    getHalka()
-  }, [])
+        fetchData();
+  }, []);
+  
+   const fetchData = async () => {
+     const data = await getHalka();
+     setHalka(data);
+   };
+  
+       
 
+   const handleSubmit = async (values: any) => {
+     if (!regex.test(values.cnic)) {
+       setError({
+         ...error,
+         cnicError:'*CNIC must be exactly 13 digits long and contain only numbers.'});
+     }
+     else {
+       setError({
+         ...error,
+         cnicError: ''
+       });
+       const userInvite = await setUser(values)
+       Alert.alert(userInvite||'')
+       setInvite(userInvite || '')
+    }
+  }
+  
   return (
     <View style={styles.safeArea}>
       <Formik
         initialValues={initialValue}
-        onSubmit={values => console.log(values)}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
+        onSubmit={values => console.log("Values",values)}>
+        {({handleChange, handleBlur, values, resetForm}) => (
           <View style={styles.formStyle}>
+            <View style={styles.selectContainer}>
+            <Text style={styles.textStyle}>CNIC</Text>
             <TextInput
               onChangeText={handleChange('cnic')}
-              onBlur={handleBlur('cnic')}
               value={values.cnic}
-              placeholder="CNIC"
+                placeholder="CNIC"
+                keyboardType='numeric'
+                maxLength={13}
               style={styles.inputStyle}
-            />
-            <Text style={styles.textStyle}>Choose Type</Text>
-            <View style={styles.pickerWrapper}>
-              <Picker
-                selectedValue={values.color}
-                onValueChange={itemValue => handleChange('color')(itemValue)}
-                style={styles.picker}>
-                {
-                  user_types.map((user) => (
-                    <Picker.Item label={user.label} value={user.value} key={user.label} />
-                  ))
-                }
-              </Picker>
+              />
+            {error.cnicError ? <Text style={styles.errorText}>{error.cnicError}</Text> : null}
             </View>
-
-            <TouchableOpacity style={styles.buttonView}>
-              <LinearGradient
-                colors={['#1410B4', '#040268']}
-                style={styles.buttonStyle}>
-                <Text style={styles.buttonText}>Generate Invite</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            <SelectField types={user_types} values={values.type} handleChange={handleChange} type={'type'} />
+            <SelectField types={halka} values={values.halka} handleChange={handleChange} type={'halka'} />
+            <CustomButton text={'Generate Invite'} onPress={()=>handleSubmit(values)}/>
             <TextInput
               onChangeText={handleChange('invite')}
-              aria-disabled
               onBlur={handleBlur('invite')}
-              value={values.invite}
+              value={invite}
               placeholder="Invite"
+              readOnly={true}
               style={styles.inputInviteStyle}
             />
+            <CustomButton text={'Copy to Clipboard'} onPress={() => (
+               Clipboard.setString(invite)
+            )}/>
           </View>
         )}
       </Formik>
@@ -77,56 +101,45 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   textStyle: {
-    fontWeight: 'bold',
+    color: 'black',
     fontSize: 16,
+    fontWeight:'bold',
+    marginTop:2,
   },
   inputInviteStyle: {
     borderWidth: 2,
     marginTop: 16,
     borderColor: '#1410B4',
-    borderRadius: 10,
+    borderRadius: 20,
     marginBottom: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
+  },
+  errorText: {
+        color: 'red',
+        marginTop: 8,
   },
   inputStyle: {
     borderWidth: 2,
-    borderColor: '#1410B4',
-    borderRadius: 10,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    borderColor: '#808080',
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    marginTop: 10,
+    marginBottom:5
+  },
+  selectContainer: {
+    marginTop: 10,
+    marginBottom:5
   },
   formStyle: {
     marginHorizontal: 10,
     marginTop: 20,
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    width: 240,
-    fontWeight: 'bold',
-    padding: 10,
-    textAlign: 'center',
-  },
-  picker: {
-    height: 50,
-    borderColor: 'black',
-  },
-  pickerWrapper: {
-    borderWidth: 2,
-    borderColor: '#1410B4',
-    borderRadius: 10,
-    overflow: 'hidden', 
-  },
   buttonView: {
     width: '100%',
     marginTop: '4%',
-    borderRadius: 25,
+    borderRadius: 20,
     alignItems: 'center',
-  },
-  buttonStyle: {
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 5,
   },
 });
+
+export default InviteUser

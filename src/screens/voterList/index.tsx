@@ -83,9 +83,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: '5%'
     },
-    infoText: {
-        marginLeft: 4
-    },
     item: {
         padding: 20,
         borderRadius: 10,
@@ -110,21 +107,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginBottom: 10,
         fontFamily: 'Lato-Bold',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    button: {
-        backgroundColor: '#ffffff',
-        padding: 10,
-        borderRadius: 5,
-        width: '45%',
-    },
-    buttonText: {
-        color: '#000',
-        textAlign: 'center',
-        fontWeight: 'bold',
     },
     notFoundText: {
         fontSize: 18,

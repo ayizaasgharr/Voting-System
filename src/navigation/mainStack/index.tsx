@@ -88,7 +88,7 @@ const MainStack = () => {
             />
             <Stack.Screen
                 name="Invite Candidiate"
-                component={CanidiateInvites }
+                component={CanidiateInvites}
                 options={{
                     headerTintColor: '#fff',
                     headerTitle: 'Invite Canidiate',

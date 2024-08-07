@@ -48,9 +48,6 @@ export default function Dashboard({ navigation }: LoginScreenProps) {
   }
 
   useEffect(() => {
-  }, []);
-
-  useEffect(() => {
     getRole()
     getVotes()
   }, [])

@@ -3,7 +3,6 @@ import firestore from '@react-native-firebase/firestore';
 
 const verifyInvite = async (values: any) => {
     try {
-        
         const userQuerySnapshot = await firestore()
             .collection('User')
             .where('cnic', '==', values.cnic)
@@ -21,7 +20,7 @@ const verifyInvite = async (values: any) => {
             }
 
         }
-        
+
         return { invite: false, userid: userId }
     } catch (error) {
         console.error('Error seeding data:', error);

@@ -88,6 +88,7 @@ export default function Signup({ navigation }: { navigation: any }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 25,
     marginBottom: 15,
+    fontFamily: 'Lato-Regular',
   },
   buttonView: {
     width: '100%',
@@ -138,12 +140,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 10,
     textAlign: 'center',
+    fontFamily: 'Lato-Bold',
   },
   optionsText: {
     textAlign: 'left',
     color: 'white',
     fontSize: 13,
     marginBottom: '4%',
+    fontFamily: 'Lato-Regular',
   },
   errorText: {
     color: 'red',
@@ -151,6 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor: 'white',
     marginHorizontal: 32,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    fontFamily: 'Lato-Regular',
   },
 });

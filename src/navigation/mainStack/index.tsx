@@ -1,5 +1,5 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { useState } from 'react';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,6 +8,8 @@ import Dashboard from '../../screens/dashboard';
 import InviteUser from '../../screens/inviteUser';
 import CanidiateForm from '../../screens/canidiateForm';
 import CanidiateInvites from '../../screens/canidiateInvites';
+import HalkaForm from '../../screens/halkaForm';
+
 import VotesReceived from '../../screens/canidiateView';
 import VoterList from '../../screens/voterList';
 import Voting from '../../screens/voting';
@@ -20,8 +22,6 @@ import { useUser } from '../../context/UserContext';
 const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
-
-    const [votes, setVotes] = useState<number>();
 
     const { setUser } = useUser();
 
@@ -67,7 +67,19 @@ const MainStack = () => {
                 component={CanidiateForm}
                 options={{
                     headerTintColor: '#fff',
-                    headerTitle: 'Create Invite',
+                    headerTitle: 'Create Canidiate',
+                    headerStyle: {
+                        backgroundColor: '#1410B4',
+                    },
+                    headerTitleStyle: styles.headerTitleStyle,
+                }}
+            />
+            <Stack.Screen
+                name="Create Halka"
+                component={HalkaForm}
+                options={{
+                    headerTintColor: '#fff',
+                    headerTitle: 'Create Halka',
                     headerStyle: {
                         backgroundColor: '#1410B4',
                     },
@@ -79,7 +91,7 @@ const MainStack = () => {
                 component={CanidiateInvites }
                 options={{
                     headerTintColor: '#fff',
-                    headerTitle: 'Canidiate Invites',
+                    headerTitle: 'Invite Canidiate',
                     headerStyle: {
                         backgroundColor: '#1410B4',
                     },

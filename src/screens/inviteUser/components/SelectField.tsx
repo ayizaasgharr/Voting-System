@@ -1,6 +1,7 @@
 import React from 'react';
-import { Picker } from '@react-native-picker/picker';
 import { View, Text, StyleSheet } from 'react-native';
+
+import { Picker } from '@react-native-picker/picker';
 
 import { Select } from '../../../../interfaces/selectfield';
 

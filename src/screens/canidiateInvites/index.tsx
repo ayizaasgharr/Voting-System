@@ -6,8 +6,8 @@ import { View, Text, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image }
 import LinearGradient from 'react-native-linear-gradient';
 import { DocumentData } from '@firebase/firestore'; 
 
-import { getUnapprovedCanidiates } from '../../firebase/updateUser';
-import { findUserByEmail, updateUser } from '../../firebase/updateUser';
+import { getUnapprovedCanidiates } from '../../firebase/User';
+import { findUserByEmail, updateUser } from '../../firebase/User';
 
 import { SuccessMessages } from '../../constants/message';
 const { width } = Dimensions.get('window');
@@ -156,7 +156,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#888',
         textAlign: 'center',
-        marginTop: 20, 
+        marginTop: 20,
+        fontFamily: 'Lato-Bold',
     },
 });
 

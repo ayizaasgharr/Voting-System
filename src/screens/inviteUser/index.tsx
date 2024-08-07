@@ -9,13 +9,12 @@ import SelectField from './components/SelectField';
 import CustomButton from '../../components/CustomButton';
 
 import { getHalka } from '../../firebase/Halka';
-import setUser from '../../firebase/User';
-
+import { setUser } from '../../firebase/User';
 
  const initialValue = {
     cnic: '',
     type: 'canidiate',
-    halka: 'na-77', 
+    halka: 'na-12', 
  };
   
  const InviteUser = () => {

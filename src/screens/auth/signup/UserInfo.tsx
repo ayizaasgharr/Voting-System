@@ -11,6 +11,7 @@ import {
 import { useState, useEffect } from 'react';
 
 import auth from '@react-native-firebase/auth';
+import bcrypt from 'bcryptjs';
 import { Formik } from 'formik';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,11 +19,10 @@ import { useRoute } from '@react-navigation/native';
 
 import { useUser } from '../../../context/UserContext';
 import { uploadImage } from '../../../utils/UploadImage';
-import { updateUser } from '../../../firebase/updateUser';
-import { getRoleById } from '../../../firebase/updateUser';
-//need to reduce styles
-//save hashed password
-//handle submit validation
+import { updateUser } from '../../../firebase/User';
+import { getRoleById } from '../../../firebase/User';
+
+
 export default function UserInfo() {
 
     const [errorText, setErrorText] = useState('')
@@ -47,9 +47,7 @@ export default function UserInfo() {
     
     const selectImage = (type:string) => {
         launchImageLibrary({ mediaType: 'photo' },async (response: ImagePickerResponse) => {
-            if (response.didCancel) {
-                Alert.alert('User cancelled image picker');
-            } else if (response.errorCode) {
+            if (response.errorCode) {
                 Alert.alert('ImagePicker Error', response.errorMessage || 'An error occurred');
             } else {
                 if (type == 'profile_picture')
@@ -74,15 +72,13 @@ export default function UserInfo() {
                 await updateUser({
                     image: uri,
                     email: values.email,
-                    password: values.password,
                     partySymbol: symbol_uri,
-                    partyName:values.party_name
+                    partyName: values.party_name
                 }, id)
                 } else {
                     await updateUser({
                         image: uri,
                         email: values.email,
-                        password: values.password,
                     },id)
                 }
                 

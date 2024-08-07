@@ -55,7 +55,7 @@ const Result = () => {
                 `${candidate?.email} - Votes: ${candidate.votes}`
             ).join('\n');
 
-            Alert.alert('Candidates and Votes', candidatesText);
+            Alert.alert('Candidates and Votes', candidatesText||"No one has voted yet");
 
         } catch (error) {
             console.error('Error fetching candidates:', error);
@@ -104,33 +104,42 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
     },
+
     searchInput: {
-        borderWidth: 4,
+        borderWidth: 2,
         borderColor: '#ccc',
-        borderRadius: 2,
+        borderRadius: 20,
         padding: 8,
         marginBottom: 16,
         fontWeight: 'bold',
+        fontSize:16,
+        fontFamily: 'Lato-Regular',
     },
+
     item: {
         padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
     },
+
     text: {
-        fontSize: 16,
+        fontSize: 18,
+        fontFamily: 'Lato-Bold',
+        textTransform: 'capitalize'
     },
+
     errorText: {
         color: 'red',
         textAlign: 'center',
         marginTop: 16,
     },
+
     notFoundText: {
         fontSize: 18,
         color: '#888',
         textAlign: 'center',
-        fontFamily: 'Lato-Bold',
         marginTop: 20,
+        fontFamily: 'Lato-Bold',
     },
 });
 

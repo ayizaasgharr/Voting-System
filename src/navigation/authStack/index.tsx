@@ -25,7 +25,7 @@ const AuthStack = () => {
                 }}
             />
             <Stack.Screen
-                name="UserInfo"
+                name="User Info"
                 component={UserInfo}
                 options={{
                     headerTintColor: '#fff',

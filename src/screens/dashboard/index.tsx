@@ -9,7 +9,8 @@ import CustomButton from "../../components/CustomButton";
 import {Navigation} from '../../types';
 
 import { getUserRole } from "../../firebase/User";
-import { findUserByEmail } from "../../firebase/updateUser";
+import { findUserByEmail } from "../../firebase/User";
+
 import { fetchVotes } from "../../firebase/Voting";
 
 type LoginScreenProps = {
@@ -30,6 +31,8 @@ export default function Dashboard({ navigation }: LoginScreenProps) {
     if(email)
     {
       const role = await getUserRole(email)  
+      console.log('Role', role)
+
       setRole(role)
     }
   }
@@ -51,18 +54,15 @@ export default function Dashboard({ navigation }: LoginScreenProps) {
     getRole()
     getVotes()
   }, [])
-  
-  const handleInviteUser = () => {
-      navigation.navigate('Invite');
-    };
     
   const handleVotesReceived = () => {
     Alert.alert("Total votes received "+ votes)
   }
 
+
   return (
     <View style={styles.safeArea}>
-      {isAdmin && <CustomButton text={'Generate Invite'} onPress={handleInviteUser} />}
+      {isAdmin && <CustomButton text={'Generate Invite'} onPress={()=>navigation.navigate('Invite')} />}
       {isAdmin && <CustomButton text={'Canidiate Invites'} onPress={() => (navigation.navigate('Invite Candidiate'))} />}
       {isVoter&& <CustomButton text={'Apply to be a Canidiate'} onPress={() => (navigation.navigate('Canidiate Form'))} />}
       {isCanidiate && <CustomButton text={'List of Voters'} onPress={() => (navigation.navigate('Voters list'))} />}
@@ -70,6 +70,8 @@ export default function Dashboard({ navigation }: LoginScreenProps) {
       {isVoter && <CustomButton text={'Cast a vote'} onPress={() => (navigation.navigate('Cast Vote'))} />}
       <CustomButton text={'View Result'} onPress={() => (navigation.navigate('Result'))} />
       {isCanidiate && <CustomButton text={'Votes Received'} onPress={handleVotesReceived} />}
+      {isAdmin && <CustomButton text={'Create Halka'} onPress={()=>navigation.navigate('Create Halka')} />}
+
     </View>
   );
 }

@@ -9,7 +9,9 @@ const verifyInvite = async (values: any) => {
             .where('cnic', '==', values.cnic)
             .get();
         let userId;
+
         if (!userQuerySnapshot.empty) {
+
             userId = userQuerySnapshot.docs[0].id
             if (!userQuerySnapshot.empty) {
                 const inviteQuerySnapshot = await firestore().collection('Invite').where('userId', '==', userId).get()
@@ -17,7 +19,9 @@ const verifyInvite = async (values: any) => {
                     return { invite: true, userid: userId }
                 }
             }
+
         }
+        
         return { invite: false, userid: userId }
     } catch (error) {
         console.error('Error seeding data:', error);

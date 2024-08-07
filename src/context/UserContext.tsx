@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import  { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 interface UserContextType {
   user: FirebaseAuthTypes.User | null;
@@ -14,11 +14,6 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(setUser);
-    return () => unsubscribe();
-  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

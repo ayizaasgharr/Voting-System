@@ -1,9 +1,16 @@
+import { useEffect, useState } from "react";
+import { View, StyleSheet } from "react-native"
 
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import auth from '@react-native-firebase/auth';
+import { Alert } from "react-native";
 
-import LinearGradient from 'react-native-linear-gradient';
+import CustomButton from "../../components/CustomButton";
 
 import {Navigation} from '../../types';
+
+import { getUserRole } from "../../firebase/User";
+import { findUserByEmail } from "../../firebase/updateUser";
+import { fetchVotes } from "../../firebase/Voting";
 
 type LoginScreenProps = {
   navigation: Navigation;
@@ -11,20 +18,58 @@ type LoginScreenProps = {
 
 export default function Dashboard({ navigation }: LoginScreenProps) {
     
+  const [role, setRole] = useState('')
+  const [votes, setVotes] = useState<number>();
+
+  const isAdmin = role == 'admin'
+  const isCanidiate = role == 'canidiate'
+  const isVoter = role == 'voter'
+
+  const getRole = async () => {
+    const email = auth().currentUser?.email
+    if(email)
+    {
+      const role = await getUserRole(email)  
+      setRole(role)
+    }
+  }
+
+
+  const getVotes = async () => {
+    const email = auth().currentUser?.email
+    if (email) {
+      const userId = await findUserByEmail(email)
+      const receivedVotes = await fetchVotes(userId)
+      setVotes(receivedVotes)
+    }
+  }
+
+  useEffect(() => {
+  }, []);
+
+  useEffect(() => {
+    getRole()
+    getVotes()
+  }, [])
+  
   const handleInviteUser = () => {
-      
       navigation.navigate('Invite');
     };
     
+  const handleVotesReceived = () => {
+    Alert.alert("Total votes received "+ votes)
+  }
+
   return (
     <View style={styles.safeArea}>
-        <TouchableOpacity style={styles.buttonView} onPress={handleInviteUser} >
-              <LinearGradient
-                colors={['#1410B4', '#040268']}
-                style={styles.buttonStyle}>
-                <Text style={styles.buttonText}>Generate Invite</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+      {isAdmin && <CustomButton text={'Generate Invite'} onPress={handleInviteUser} />}
+      {isAdmin && <CustomButton text={'Canidiate Invites'} onPress={() => (navigation.navigate('Invite Candidiate'))} />}
+      {isVoter&& <CustomButton text={'Apply to be a Canidiate'} onPress={() => (navigation.navigate('Canidiate Form'))} />}
+      {isCanidiate && <CustomButton text={'List of Voters'} onPress={() => (navigation.navigate('Voters list'))} />}
+      {isAdmin && <CustomButton text={'Schedule Voting'} onPress={() => (navigation.navigate('Voting'))} />}
+      {isVoter && <CustomButton text={'Cast a vote'} onPress={() => (navigation.navigate('Cast Vote'))} />}
+      <CustomButton text={'View Result'} onPress={() => (navigation.navigate('Result'))} />
+      {isCanidiate && <CustomButton text={'Votes Received'} onPress={handleVotesReceived} />}
     </View>
   );
 }

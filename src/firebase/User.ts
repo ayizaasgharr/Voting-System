@@ -35,4 +35,12 @@ const setUser = async (values: any) => {
         console.error('Error seeding data:', error);
     }
 };
+
+export const getUserRole = async (email: string) => {
+    const userRef = await firestore()
+        .collection('User')
+        .where('email', '==', email).get()
+    const userRole = userRef.docs[0]?.data().user_type
+    return userRole
+}
 export default setUser;

@@ -15,21 +15,24 @@ const CustomButton = ({text, onPress}: CustomButtonProps) => (
 )
 
 const styles = StyleSheet.create({
+  
     buttonView: {
     width: '100%',
     marginTop: '4%',
     borderRadius: 20,
     alignItems: 'center',
   },
+
    buttonText: {
     color: 'white',
-    fontSize: 18,
     width: 240,
-    fontWeight: 'bold',
     padding: 10,
-    textAlign: 'center',
-    },
-     buttonStyle: {
+     textAlign: 'center',
+     fontFamily: 'Lato-Bold',
+     fontSize: 18, 
+  },
+   
+    buttonStyle: {
     borderRadius: 20,
     alignItems: 'center',
     marginTop: 5,

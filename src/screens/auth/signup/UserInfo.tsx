@@ -8,7 +8,7 @@ import {
     Alert,
     Image
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import auth from '@react-native-firebase/auth';
 import { Formik } from 'formik';
@@ -18,27 +18,47 @@ import { useRoute } from '@react-navigation/native';
 
 import { useUser } from '../../../context/UserContext';
 import { uploadImage } from '../../../utils/UploadImage';
-import updateUser from '../../../firebase/updateUser';
+import { updateUser } from '../../../firebase/updateUser';
+import { getRoleById } from '../../../firebase/updateUser';
 //need to reduce styles
-
 //save hashed password
+//handle submit validation
 export default function UserInfo() {
 
     const [errorText, setErrorText] = useState('')
     const [imageUri, setImageUri] = useState<string | null>(null);
+    const [symbolUri, setSymbolUri] = useState<string | null>(null);
 
+    const [role, setRole] = useState<string>('')
+    
     const { setUser } = useUser();
     const route = useRoute();
     const { id } = route.params as { id: string }; 
 
-    const selectImage = () => {
+    const getRole = async() => {
+        const role = await getRoleById(id)
+        setRole(role)
+    }
+
+    useEffect(() => {
+        getRole()
+    }, [])
+
+    
+    const selectImage = (type:string) => {
         launchImageLibrary({ mediaType: 'photo' },async (response: ImagePickerResponse) => {
             if (response.didCancel) {
                 Alert.alert('User cancelled image picker');
             } else if (response.errorCode) {
                 Alert.alert('ImagePicker Error', response.errorMessage || 'An error occurred');
             } else {
-                setImageUri(response.assets?.[0].uri || null);
+                if (type == 'profile_picture')
+                {
+                    setImageUri(response.assets?.[0].uri || null);
+                }
+                else if (type == 'party_symbol') {
+                    setSymbolUri(response.assets?.[0].uri || null)
+                }
             
             }
         });
@@ -46,13 +66,26 @@ export default function UserInfo() {
 
     const handleSubmit = async (values: any) => {
         try {
-            if (values.email && values.password && imageUri) {
+            if (values.email && values.password && imageUri ) {
                 const uri = await uploadImage(imageUri); 
+                if (symbolUri)
+                {
+                const symbol_uri = await uploadImage(symbolUri)
                 await updateUser({
                     image: uri,
                     email: values.email,
-                    password: values.password
-               },id)
+                    password: values.password,
+                    partySymbol: symbol_uri,
+                    partyName:values.party_name
+                }, id)
+                } else {
+                    await updateUser({
+                        image: uri,
+                        email: values.email,
+                        password: values.password,
+                    },id)
+                }
+                
                await  auth()
                     .createUserWithEmailAndPassword(values.email, values.password)
                 setUser(auth().currentUser);
@@ -76,7 +109,7 @@ return (
         <LinearGradient colors={['#1410B4', '#040268']} style={styles.safeArea}>
             <View style={styles.formContainer}>
             <Formik
-                initialValues={{ email: '', password: '' }}
+                    initialValues={{ email: '', password: '', party_name:'', }}
                 onSubmit={(values) => {
                     console.log(values);
                 }}
@@ -115,15 +148,35 @@ return (
                         />
                         {touched.password && errors.password ? (
                             <Text style={styles.errorText}>{errors.password}</Text>
-                        ) : null}
-                            <View style={styles.imageContainer}>
-                                {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
-                                <TouchableOpacity style={styles.buttonStyle} onPress={selectImage}>
-                                    <LinearGradient colors={['#ED21D9', '#970DD9']} style={styles.buttonStyle}>
-                                        <Text style={styles.buttonText}>Upload Image</Text>
+                            ) : null}
+                           { role=='canidiate'&& <TextInput
+                                style={styles.input}
+                                placeholder="Party Name"
+                                value={values.party_name}
+                                onChangeText={handleChange('party_name')}
+                                onBlur={handleBlur('party_name')}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                placeholderTextColor={'white'}
+                            />}
+                             <View style={styles.imageContainer}>
+                                    {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+                                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>selectImage('profile_picture')}>
+                                        <LinearGradient colors={['#ED21D9', '#970DD9']} style={styles.buttonStyle}>
+                                            <Text style={styles.buttonText}>Upload Image</Text>
                                         </LinearGradient>
-                            </TouchableOpacity>
-                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            {
+                                role == 'canidiate' &&
+                                <View style={styles.imageContainer}>
+                                    {symbolUri && <Image source={{ uri: symbolUri }} style={styles.image} />}
+                                    <TouchableOpacity style={styles.buttonStyle} onPress={() => selectImage('party_symbol')}>
+                                        <LinearGradient colors={['#ED21D9', '#970DD9']} style={styles.buttonStyle}>
+                                            <Text style={styles.buttonText}>Upload Party Symbol</Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                </View>}
                         <View style={styles.buttonView}>
                             <TouchableOpacity onPress={() => handleSubmit(values)} style={styles.buttonView}>
                                 <LinearGradient colors={['#ED21D9', '#970DD9']} style={styles.buttonStyle}>

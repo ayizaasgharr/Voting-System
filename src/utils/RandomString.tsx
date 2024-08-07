@@ -1,4 +1,5 @@
-const generateRandomString = (length:number) => {
+const generateRandomString = (length: number) => {
+    
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -6,6 +7,7 @@ const generateRandomString = (length:number) => {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+    
 }
 
 export default generateRandomString

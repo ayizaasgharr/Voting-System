@@ -8,7 +8,7 @@ import { user_types } from '../../constants/invite';
 import SelectField from './components/SelectField';
 import CustomButton from '../../components/CustomButton';
 
-import getHalka from '../../firebase/Halka';
+import { getHalka } from '../../firebase/Halka';
 import setUser from '../../firebase/User';
 
 
@@ -95,6 +95,7 @@ import setUser from '../../firebase/User';
   );
 }
 
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -103,8 +104,9 @@ const styles = StyleSheet.create({
   textStyle: {
     color: 'black',
     fontSize: 16,
-    fontWeight:'bold',
-    marginTop:2,
+    fontWeight: 'bold',
+    marginTop: 2,
+    fontFamily: 'Lato-Bold',
   },
   inputInviteStyle: {
     borderWidth: 2,
@@ -113,10 +115,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 20,
     paddingHorizontal: 20,
+    fontFamily: 'Lato-Regular',
   },
   errorText: {
-        color: 'red',
-        marginTop: 8,
+    color: 'red',
+    marginTop: 8,
+    fontFamily: 'Lato-Regular',
   },
   inputStyle: {
     borderWidth: 2,
@@ -124,11 +128,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 20,
     marginTop: 10,
-    marginBottom:5
+    marginBottom: 5,
+    fontFamily: 'Lato-Regular',
   },
   selectContainer: {
     marginTop: 10,
-    marginBottom:5
+    marginBottom: 5,
   },
   formStyle: {
     marginHorizontal: 10,
@@ -140,6 +145,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
   },
-});
+})
 
 export default InviteUser

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import { fetchVotes } from '../../firebase/Voting';
-import { findUserByEmail } from '../../firebase/updateUser';
+import { findUserByEmail } from '../../firebase/User';
 
 const VotesReceived = () => {
     const [votes, setVotes] = useState<number>();
@@ -18,6 +18,8 @@ const VotesReceived = () => {
             setVotes(receivedVotes)
         } 
     }
+
+    
 
     useEffect(() => {
         getVotes()

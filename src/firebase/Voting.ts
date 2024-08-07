@@ -19,7 +19,6 @@ export const saveTimesToFirebase = async (startTime: Date, endTime: Date) => {
     }
 };
 
-
 export const getVotingTimes = async () => {
     const now = new Date();
     const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
@@ -48,18 +47,22 @@ export const getVotingTimes = async () => {
 
 
 export const getCandidates = async (constituency: string) => {
+
     const snapshot = await firestore()
         .collection('User')
         .where('user_type', '==', 'canidiate' ).where('halka','==',constituency)
         .get();
+    
     if (!snapshot.empty) {
         return snapshot.docs.map(doc => doc.data());
     } else {
         return [];
     }
+
 };
 
 export const hasVoted = async (voterId: string) => {
+
     const snapshot = await firestore()
         .collection('Vote')
         .where('voterId', '==', voterId)
@@ -69,6 +72,7 @@ export const hasVoted = async (voterId: string) => {
 };
 
 export const castVote = async (voterId: string, email: string, halka: string) => {
+
     if (await hasVoted(voterId)) {
         throw new Error('You have already voted.');
     }
@@ -91,10 +95,13 @@ export const castVote = async (voterId: string, email: string, halka: string) =>
 
 export const fetchVotes = async (candidateEmail:string) => {
     try {
+
         const votesSnapshot = await firestore().collection('Vote').where('email', '==', candidateEmail).get();
+
         if (!votesSnapshot.empty) {
             return votesSnapshot.size
         }
+        
              return 0
     } catch (error) {
         console.error('Error fetching votes:', error);

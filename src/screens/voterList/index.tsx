@@ -7,7 +7,7 @@ import auth from '@react-native-firebase/auth';
 import { DocumentData } from '@firebase/firestore';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { findUserByEmail } from '../../firebase/updateUser';
+import { findUserByEmail } from '../../firebase/User';
 import { getUsersbyHalka, getUserHalka } from '../../firebase/Halka';
 
 const { width } = Dimensions.get('window');

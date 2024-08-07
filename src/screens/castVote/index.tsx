@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, FlatList, StyleSheet, TouchableOpacity,Dimensions, Image} from 'react-native';
+import { View, Text, Alert, FlatList, StyleSheet, TouchableOpacity,Dimensions, Image, ActivityIndicator} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import LinearGradient from 'react-native-linear-gradient';
@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { castVote } from '../../firebase/Voting';
 import { getCandidates } from '../../firebase/Voting';
 import { getUserHalka } from '../../firebase/Halka';
-import { findUserByEmail } from '../../firebase/updateUser';
+import { findUserByEmail } from '../../firebase/User';
 
 const { width } = Dimensions.get('window');
 
@@ -49,7 +49,7 @@ const CastVote = () => {
     };
 
     if (loading) {
-        return <Text>Loading...</Text>;
+        return <ActivityIndicator size="large" color="#0000ff" />
     }
 
     const renderItem = ({ item }: any) => (
@@ -80,7 +80,6 @@ const CastVote = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Vote for Your Candidate</Text>
             {candidates.length ?
                 <FlatList
                 data={candidates}
@@ -183,6 +182,7 @@ const styles = StyleSheet.create({
         color: '#888',
         textAlign: 'center',
         marginTop: 20,
+        fontFamily: 'Lato-Bold',
     },
 
     image: {

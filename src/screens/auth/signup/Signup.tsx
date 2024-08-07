@@ -11,13 +11,12 @@ import { Formik } from 'formik';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import verifyInvite from '../../../firebase/verifyInvite';
+import verifyInvite from '../../../firebase/Invite';
 
 const initialValues = {
   invite: '',
   cnic: '',
 };
-//submit function can be improved
 export default function Signup({ navigation }: { navigation: any }) {
 
   const [errorText, setErrorText] = useState('')
@@ -26,9 +25,8 @@ export default function Signup({ navigation }: { navigation: any }) {
   const handleSubmit = async (values: any) => {
     const verifiedInvite = await verifyInvite(values)
     if(verifiedInvite?.invite)
-    { navigation.navigate('UserInfo',{id:verifiedInvite.userid}); }
+    { navigation.navigate('User Info',{id:verifiedInvite.userid}); }
     else {
-      // navigation.navigate('UserInfo');
       setErrorText('Invalid Invite!!')
     }
     
@@ -66,6 +64,7 @@ export default function Signup({ navigation }: { navigation: any }) {
                 value={values.cnic}
                 onChangeText={handleChange('cnic')}
                 onBlur={handleBlur('cnic')}
+                maxLength={13}
                 placeholderTextColor={'white'}
                 autoCapitalize="none"
               />

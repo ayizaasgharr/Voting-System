@@ -12,6 +12,7 @@ const Voting = ({ navigation }: { navigation: any }) => {
     const handleSave = () => {
         if (startDate && endDate) {
             saveTimesToFirebase(startDate, endDate);
+            navigation.navigate('Dashboard')
         }
     };
 
@@ -46,7 +47,7 @@ const Voting = ({ navigation }: { navigation: any }) => {
             <Text style={styles.header}>Select Start and End Dates</Text>
 
             <View style={styles.buttonContainer}>
-                <Button title="Select Start Date" onPress={() => setShowStartPicker(true)} />
+                <Button title="Select Start Date" color={'#040268'} onPress={() => setShowStartPicker(true)} />
             </View>
 
             <Text style={styles.dateText}>
@@ -54,7 +55,7 @@ const Voting = ({ navigation }: { navigation: any }) => {
             </Text>
 
             <View style={styles.buttonContainer}>
-                <Button title="Select End Date" onPress={() => setShowEndPicker(true)} />
+                <Button title="Select End Date" color={'#040268'} onPress={() => setShowEndPicker(true)} />
             </View>
 
             <Text style={styles.dateText}>
@@ -82,6 +83,7 @@ const Voting = ({ navigation }: { navigation: any }) => {
             <View style={styles.saveButtonContainer}>
                 <Button
                     title="Save"
+                    color={'#040268'}
                     onPress={handleSave}
                     disabled={isSaveButtonDisabled}
                 />

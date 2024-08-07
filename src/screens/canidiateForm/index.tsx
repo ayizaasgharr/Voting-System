@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import CustomButton from '../../components/CustomButton';
 import { uploadImage } from '../../utils/UploadImage';
-import { findUserByEmail, updateUser } from '../../firebase/updateUser';
+import { findUserByEmail, updateUser } from '../../firebase/User';
 
 export default function CanidiateForm() {
 
@@ -26,9 +26,7 @@ export default function CanidiateForm() {
     
     const selectImage = () => {
         launchImageLibrary({ mediaType: 'photo' }, async (response: ImagePickerResponse) => {
-            if (response.didCancel) {
-                Alert.alert('User cancelled image picker');
-            } else if (response.errorCode) {
+            if (response.errorCode) {
                 Alert.alert('ImagePicker Error', response.errorMessage || 'An error occurred');
             } else {
                 setImageUri(response.assets?.[0].uri || null);

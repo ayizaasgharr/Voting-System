@@ -11,7 +11,6 @@ import {
 import { useState, useEffect } from 'react';
 
 import auth from '@react-native-firebase/auth';
-import bcrypt from 'bcryptjs';
 import { Formik } from 'formik';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';

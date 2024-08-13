@@ -48,9 +48,6 @@ export default function Dashboard({ navigation }: LoginScreenProps) {
   }
 
   useEffect(() => {
-  }, []);
-
-  useEffect(() => {
     getRole()
     getVotes()
   }, [])
@@ -63,8 +60,8 @@ export default function Dashboard({ navigation }: LoginScreenProps) {
   return (
     <View style={styles.safeArea}>
       {isAdmin && <CustomButton text={'Generate Invite'} onPress={()=>navigation.navigate('Invite')} />}
-      {isAdmin && <CustomButton text={'Canidiate Invites'} onPress={() => (navigation.navigate('Invite Candidiate'))} />}
-      {isVoter&& <CustomButton text={'Apply to be a Canidiate'} onPress={() => (navigation.navigate('Canidiate Form'))} />}
+      {isAdmin && <CustomButton text={'Candidates Invites'} onPress={() => (navigation.navigate('Invite Candidiate'))} />}
+      {isVoter && <CustomButton text={'Apply to be a Candidates'} onPress={() => (navigation.navigate('Canidiate Form'))} />}
       {isCanidiate && <CustomButton text={'List of Voters'} onPress={() => (navigation.navigate('Voters list'))} />}
       {isAdmin && <CustomButton text={'Schedule Voting'} onPress={() => (navigation.navigate('Voting'))} />}
       {isVoter && <CustomButton text={'Cast a vote'} onPress={() => (navigation.navigate('Cast Vote'))} />}

@@ -4,15 +4,15 @@ const seed = async () => {
   try {
        const userQuerySnapshot = await firestore()
          .collection('User')
-         .where('Email', '==', 'admin21@gmail.com')
+         .where('email', '==', 'admin21@gmail.com')
          .get();
   
     if (userQuerySnapshot.empty) {
            await firestore().collection('User').add({
-             Name: 'Admin',
-             Password: 'admin1234',
-             Email: 'admin21@gmail.com',
-             UserType: 'Admin',
+             name: 'Admin',
+             password: 'admin1234',
+             email: 'admin21@gmail.com',
+             user_type: 'admin',
            });
          }
   } catch (error) {

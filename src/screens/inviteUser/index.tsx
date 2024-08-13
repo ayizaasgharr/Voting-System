@@ -58,8 +58,8 @@ import { setUser } from '../../firebase/User';
     <View style={styles.safeArea}>
       <Formik
         initialValues={initialValue}
-        onSubmit={values => console.log("Values",values)}>
-        {({handleChange, handleBlur, values, resetForm}) => (
+        onSubmit={handleSubmit}>
+        {({handleChange, handleBlur, values, resetForm, submitForm}) => (
           <View style={styles.formStyle}>
             <View style={styles.selectContainer}>
             <Text style={styles.textStyle}>CNIC</Text>
@@ -75,7 +75,7 @@ import { setUser } from '../../firebase/User';
             </View>
             <SelectField types={user_types} values={values.type} handleChange={handleChange} type={'type'} />
             <SelectField types={halka} values={values.halka} handleChange={handleChange} type={'halka'} />
-            <CustomButton text={'Generate Invite'} onPress={()=>handleSubmit(values)}/>
+            <CustomButton text={'Generate Invite'} onPress={submitForm} />
             <TextInput
               onChangeText={handleChange('invite')}
               onBlur={handleBlur('invite')}
